@@ -4,7 +4,7 @@ maintainer_email 'ilovemysillybanana@gmail.com'
 license 'all_rights'
 description 'Installs ASP.NET/.NET Core'
 long_description 'Installs ASP.NET/.NET Core'
-version '0.1.1'
+version '0.1.2'
 
 supports 'ubuntu', '= 14.04'
 supports 'ubuntu', '= 16.04'
