@@ -1,8 +1,11 @@
 resource_name :dotnet_install
 property :message, String, name_property: true
-property :version, String, default: '' # if nil, defaults to latest
 property :location, String, default: '/opt/dotnet.tar.gz'
 property :download_link, String, default: "#{node['dotnet']['download']['link']}#{node['dotnet']['download']["#{node['platform']}"]["#{node['platform_version'][0]}"]}"
+property :apt_source, String, default: node['dotnet']['download']['ubuntu']["#{node['platform_version']}"]
+property :key, String, default: ''
+property :keyserver, String, default: ''
+property :distribution, String, default: ''
 
 load_current_value do
     if ::File.exist?(location.to_s)
@@ -39,7 +42,20 @@ action :install do
                 action :create
             end
         when 'ubuntu'
-            # TODO
+          apt_repository "dotnetdev" do
+            uri apt_source
+            components ['main']
+            arch 'amd64'
+            key '417A0893'
+            keyserver 'keyserver.ubuntu.com'
+            action :add
+            deb_src false
+          end
+
+          package 'dotnet-dev-1.0.0-preview2.1-003177' do
+            action :install
+          end
+
         end
 
     when 'rhel'
